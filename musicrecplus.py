@@ -24,8 +24,12 @@ def enterPreferences(name, file):
         artists += artist + ","
         artist = input("Enter an artist that you like ( Enter to finish ): ").title()
     artists = artists[:-1]
+    artists = artists.rstrip(',')
+    artists_list = artists.split(',')
+    artists_list.sort()
+    artists_s = ', '.join(artists_list)
     if newUser(name, open(file, "r")):
-        open(file, "w").write(name+":"+artists)
+        open(file, "w").write(name+":"+artists_s)
 
 def main(file):
     name = input("Enter your name ( put a $ symbol after your name if you wish your preferences to remain private ): ")
