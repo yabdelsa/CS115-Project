@@ -97,7 +97,7 @@ def main(file):
         elif option == 'p':
             print("Show Most Popular Artist")
         elif option == 'h':
-            print("How Popular is the Most Liked")
+            print("How Popular is the Most Popular")
         elif option == 'm':
             print("Which User Has the Most Likes")
         option = menu()
