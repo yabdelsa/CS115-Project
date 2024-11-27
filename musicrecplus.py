@@ -52,7 +52,7 @@ def showMostPopularArtist(file):
         user, artists = lines.split(":")
         
         if not user.endswith("$") #Skip private user
-            for artist in artists.strip(0.split(','):
+            for artist in artists.strip().split(','):
                 artist_counts[artist] = artst_counts.get(artist, 0) + 1
     if artist_counts:
         most_popular_count = max(artist_counts.values()) 
