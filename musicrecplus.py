@@ -19,10 +19,10 @@ def menu():
 
 def enterPreferences(name, file):
     artists = ""
-    artist = input("Enter an artist that you like ( Enter to finish ): ")
+    artist = input("Enter an artist that you like ( Enter to finish ): ").title()
     while artist:
         artists += artist + ","
-        artist = input("Enter an artist that you like ( Enter to finish ): ")
+        artist = input("Enter an artist that you like ( Enter to finish ): ").title()
     artists = artists[:-1]
     if newUser(name, open(file, "r")):
         open(file, "w").write(name+":"+artists)
