@@ -50,11 +50,11 @@ def showMostPopularArtist(file):
     artist_counts = {} 
     lines = open(file, "r").readlines()
     for line in lines:
-        user, artists = lines.split(":")
+        user, artists = line.split(":")
         
         if not user.endswith("$"):
             for artist in artists.strip().split(','):
-                artist_counts[artist] = artst_counts.get(artist, 0) + 1
+                artist_counts[artist] = artist_counts.get(artist, 0) + 1
     if artist_counts:
         most_popular_count = max(artist_counts.values()) 
         most_popular_count = [artist for artist, count in artist_counts.items() if count == most_popular_count] 
