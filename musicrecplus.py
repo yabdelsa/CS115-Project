@@ -75,8 +75,8 @@ def showUserWithMostLikes(file):
             for artist in artists.strip().split(','):
                 artist_counts[artist] = artist_counts.get(artist, 0) + 1
     if artist_counts: 
-        most_liked_count = max(artist_counts.values())
-        print(most_liked_count) 
+        most_liked_artist = max(artist_counts, key = artist_counts.get)
+        print(most_liked_artist)
     else: 
         print("Sorry, no artists found")
 
