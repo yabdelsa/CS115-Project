@@ -23,6 +23,7 @@ def menu():
     option = input(menuStr).lower()
     while option not in ["e", "r", "p", "h", "m", "q"]:
         option = input(menuStr).lower()
+    return option
 
 def enterPreferences(name, file):
     """
@@ -68,7 +69,7 @@ def showUserWithMostLikes(file):
     """
     artist_counts = {}
     lines = open(file, "r").readlines()
-    for lines in lines:
+    for line in lines:
         user, artists = line.split(":")
         if not user.endwith("$"):
             for artist in artists.strip().split(','):
