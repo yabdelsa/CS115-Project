@@ -71,7 +71,7 @@ def showUserWithMostLikes(file):
     lines = open(file, "r").readlines()
     for line in lines:
         user, artists = line.split(":")
-        if not user.endwith("$"):
+        if not user.endswith("$"):
             for artist in artists.strip().split(','):
                 artist_counts[artist] = artist_counts.get(artist, 0) + 1
     if artist_counts: 
