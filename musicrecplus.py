@@ -58,7 +58,7 @@ def showMostPopularArtist(file):
     if artist_counts:
         most_popular_count = max(artist_counts.values()) 
         most_popular_count = [artist for artist, count in artist_counts.items() if count == most_popular_count] 
-        print("Most Popular Artist(s): " + ', '.join(most_popular_artists))
+        print("Most Popular Artist(s): " + ', '.join(most_popular_count))
     else: 
         print("Sorry. no artists found") 
         
