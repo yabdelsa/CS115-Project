@@ -63,9 +63,9 @@ def showMostPopularArtist(file):
         print("Sorry. no artists found") 
         
 
-def showUserWithMostLikes(file):
+def MostPopularCount(file):
     """
-    Shows how popular the most like artist is by counting the number of users who like it
+    Shows how popular the most liked artist is by counting the number of users who like it
     """
     artist_counts = {}
     lines = open(file, "r").readlines()
@@ -79,6 +79,14 @@ def showUserWithMostLikes(file):
         print(most_liked_artist)
     else: 
         print("Sorry, no artists found")
+
+
+def showUserWithMostLikes(file):
+    """
+    Displays the user(s) with the most liked artists.
+    """
+    max_likes = 0
+    most_liked_users = []
 
 
 def main(file):
