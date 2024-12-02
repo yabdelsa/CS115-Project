@@ -45,12 +45,24 @@ def enterPreferences(user, database):
         artists.append(artist)
         artist = input("Enter an artist that you like ( Enter to finish ): ").title().strip()
     artists.sort()
-    artistsStr = ",".join(artists)
-    database[user] = artistsStr
+    database[user] = artists
 
 def getRecommendations(user, database): 
     sameCounts = {}
-    pass
+    artists = database[user]
+    for user2 in database:
+        if user2 != user and not isPrivate(user2)
+            artists2 = database[user2]
+            for artist in artists2:
+                if artist in artists:
+                    sameCounts[user2] = sameCounts.get(user2, 0) + 1
+    for user2 in sameCounts:
+        artists2 = database[user2]
+        
+    if sameCounts:
+        
+    else:
+        print("No recommendations available at this time.")
 
 def showMostPopularArtists(database):
     """
@@ -59,9 +71,9 @@ def showMostPopularArtists(database):
     """
     artistCounts = {}
     for user in database:
-        artists = database[user]
         if not isPrivate(user):
-            for artist in artists.split(","):
+            artists = database[user]
+            for artist in artists:
                 artistCounts[artist] = artistCounts.get(artist, 0) + 1
     if artistCounts:
         mostPopularArtists = []
@@ -83,9 +95,9 @@ def mostPopularCount(database):
     """
     artistCounts = {}
     for user in database:
-        artists = database[user]
         if not isPrivate(user):
-            for artist in artists.split(","):
+            artists = database[user]
+            for artist in artists:
                 artistCounts[artist] = artistCounts.get(artist, 0) + 1
     if artistCounts:
         mostPopularCount = max(artistCounts.values())
@@ -100,9 +112,9 @@ def showUsersWithMostArtists(database):
     """
     userCounts = {}
     for user in database:
-        artists = database[user]
         if not isPrivate(user):
-            userCounts[user] = len(artists.split(","))
+            artists = database[user]
+            userCounts[user] = len(artists)
     if userCounts:
         maxArtists = max(userCounts.values())
         users = [user for user, count in userCounts.items() if count == maxArtists]
@@ -148,6 +160,8 @@ def main(fileName, database):
         option = menu()
     with open(fileName, "w") as file:
         for user in database:
-            file.write(user + ":" + database[user])
+            artistsStr = ",".join(database[user])
+            string = user + ":" + artistsStr
+            file.write(string)
             
 main("musicrecplus.txt", database)
