@@ -1,3 +1,8 @@
+"""
+CS115 Group Project
+Created by Zachary Wilkinson, Yahia Abdelsalam, Thomas Webster
+"""
+
 menuStr = """Enter a letter to choose an option:
 e - Enter preferences
 r - Get recommendations
@@ -13,6 +18,8 @@ def isNewUser(user, database):
     """
     Returns True if user's name is not found in file.
     Returns False if user's name is found in file.
+
+    Created by Thomas Webster
     """
     return user not in database
 
@@ -20,6 +27,8 @@ def isPrivate(user):
     """
     Returns True if user chose to be private.
     Returns False otherwise.
+
+    Created by Yahia AbdelSalam
     """
     return user.endswith("$")
 
@@ -28,6 +37,8 @@ def menu():
     Displays menu options and prompts user to select
     one until they input valid choice and then returns
     selection.
+
+    Created by Thomas Webster
     """
     option = input(menuStr).lower()
     while option not in ["e","r","p","h","m","q"]:
@@ -37,7 +48,9 @@ def menu():
 def enterPreferences(user, database):
     """
     Prompts the user to enter their favorite artists and
-    updates the database. 
+    updates the database.
+
+    Created by Yahia Abdelsalam
     """
     artists = []
     artist = input("Enter an artist that you like (Enter to finish): \n").title().strip()
@@ -52,6 +65,8 @@ def getRecommendations(user, database):
     Finds other user with most similar preferences
     to user and prints artists in their preferences
     that user does not also have.
+
+    Created by Zachary Wilkinson
     """
     sameCounts = {}
     artists = database[user]
@@ -76,6 +91,8 @@ def showMostPopularArtists(database):
     """
     Finds top three artists who appear most in database
     and prints each of their names.
+
+    Created by Zachary Wilkinson
     """
     artistCounts = {}
     for user in database:
@@ -86,14 +103,21 @@ def showMostPopularArtists(database):
                 artistCounts[artist] = artistCounts.get(artist, 0) + 1
     if artistCounts:
         mostPopularArtists = []
+        artistCounts2 = artistCounts.copy()
         for i in range(3):
-            for artist in artistCounts:
-                if artistCounts[artist] == max(artistCounts.values()):
+            for artist in artistCounts2:
+                if artistCounts2[artist] == max(artistCounts2.values()):
                     mostPopularArtists.append(artist)
-                    del artistCounts[artist]
+                    del artistCounts2[artist]
                     break
-        for artist in mostPopularArtists:
-            print(artist.strip())
+        maxCount = max(artistCounts.values())
+        tied = [artist for artist in mostPopularArtists if artistCounts[artist] == maxCount]
+        if tied:
+            for artist in tied:
+                print(artist.strip())
+        else:
+            for artist in mostPopularArtists:
+                print(artist.strip())
     else: 
         print("Sorry, no artists found.")     
 
@@ -101,6 +125,8 @@ def mostPopularCount(database):
     """
     Finds the artist who appears most in database and
     prints number of times it is found.
+
+    Created by Yahia Abdelsalam
     """
     artistCounts = {}
     for user in database:
@@ -119,6 +145,8 @@ def showUsersWithMostArtists(database):
     """
     Prints the names of the user(s) who like(s) the
     most artists.
+
+    Created by Zachary Wilkinson
     """
     userCounts = {}
     for user in database:
@@ -140,6 +168,8 @@ def main(fileName, database):
     if it doesn't exist, opens menu and runs function
     according to user selection until they quit, and
     finally writes to file.
+
+    Created by Zachary Wilkinson, Yahia Abdelsalam, Thomas Webster
     """
     user = input("Enter your name (put a $ symbol after your name if you wish your preferences to remain private): \n")
     
