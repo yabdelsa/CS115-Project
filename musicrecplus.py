@@ -40,10 +40,10 @@ def enterPreferences(user, database):
     updates the database. 
     """
     artists = []
-    artist = input("Enter an artist that you like ( Enter to finish ): ").title().strip()
+    artist = input("Enter an artist that you like (Enter to finish): ").title().strip()
     while artist:
         artists.append(artist)
-        artist = input("Enter an artist that you like ( Enter to finish ): ").title().strip()
+        artist = input("Enter an artist that you like (Enter to finish): ").title().strip()
     artists.sort()
     database[user] = artists
 
@@ -59,9 +59,7 @@ def getRecommendations(user, database):
     sameCounts = {user2: count for user2, count in sameCounts.items() if len(database[user2]) != count}
     if sameCounts:
         for user2 in sameCounts:
-            print(user2 + ": " + str(sameCounts[user2]))
             if sameCounts[user2] == max(sameCounts.items()):
-                print("Recommender: " + user2)
                 recs = [rec for artist in database[recommender] if artist not in artists]
                 recsString = ",".join(recs)
                 print(recsString)
