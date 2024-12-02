@@ -1,6 +1,7 @@
 """
 CS115 Group Project
 Created by Zachary Wilkinson, Yahia Abdelsalam, Thomas Webster
+Pledge: I pledge my honor that I have abided by the Stevens Honor System.
 """
 
 menuStr = """Enter a letter to choose an option:
