@@ -59,7 +59,7 @@ def showMostPopularArtist(database):
     for line in database:
         user, artists = line.split(":")
         if not isPrivate(user):
-            for artist in artists.split(','):
+            for artist in artists.split(","):
                 artistCounts[artist] = artistCounts.get(artist, 0) + 1
     if artistCounts:
         mostPopularArtists = []
@@ -83,7 +83,7 @@ def mostPopularCount(database):
     for line in database:
         user, artists = line.split(":")
         if not isPrivate(user):
-            for artist in artists.split(','):
+            for artist in artists.split(","):
                 artistCounts[artist] = artistCounts.get(artist, 0) + 1
     if artistCounts:
         mostPopularCount = max(artistCounts.values())
@@ -91,11 +91,23 @@ def mostPopularCount(database):
     else: 
         print("Sorry, no artists found.")
 
-def showUserWithMostLikes(database):
+def showUserWithMostArtists(database):
     """
-    Displays the user(s) with the most liked artists.
+    Prints the names of the user(s) who like(s) the
+    most artists.
     """
-    pass
+    userCounts = {}
+    for line in database:
+        user, artists = line.split(":")
+        if not isPrivate(user):
+            userCounts[user] = len(artists.split(","))
+    if userCounts:
+        maxArtists = max(userCounts.values())
+        users = [user for user, count in userCounts.items() if count == maxArtists]
+        for user in users:
+            print(user)
+    else:
+        print("Sorry, no user found.")
 
 def main(fileName, database):
     user = input("Enter your name ( put a $ symbol after your name if you wish your preferences to remain private ): ")
@@ -110,17 +122,17 @@ def main(fileName, database):
         enterPreferences(user, database)
     
     option = menu() 
-    while option != 'q': 
-        if option == 'e':
+    while option != "q": 
+        if option == "e":
             enterPreferences(user, database)
-        elif option == 'r':
+        elif option == "r":
             print("Get Recommendations") 
-        elif option == 'p':
+        elif option == "p":
             showMostPopularArtist(database)
-        elif option == 'h':
+        elif option == "h":
             mostPopularCount(database)
-        elif option == 'm':
-            print("Which User Has the Most Likes")
+        elif option == "m":
+            showUserWithMostArtists(database)
         option = menu()
     with open(fileName, "w") as file:
         for line in database:
