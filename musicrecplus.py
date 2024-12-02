@@ -51,16 +51,21 @@ def getRecommendations(user, database):
     sameCounts = {}
     artists = database[user]
     for user2 in database:
-        if user2 != user and not isPrivate(user2)
+        if user2 != user and not isPrivate(user2):
             artists2 = database[user2]
             for artist in artists2:
-                if artist in artists:
+                if artist.strip() in artists:
                     sameCounts[user2] = sameCounts.get(user2, 0) + 1
-    for user2 in sameCounts:
-        artists2 = database[user2]
-        
+    sameCounts = {user2: count for user2, count in sameCounts.items() if len(database[user2]) != count}
     if sameCounts:
-        
+        for user2 in sameCounts:
+            print(user2 + ": " + str(sameCounts[user2]))
+            if sameCounts[user2] == max(sameCounts.items()):
+                print("Recommender: " + user2)
+                recs = [rec for artist in database[recommender] if artist not in artists]
+                recsString = ",".join(recs)
+                print(recsString)
+                return None
     else:
         print("No recommendations available at this time.")
 
@@ -138,7 +143,7 @@ def main(fileName, database):
         lines = file.readlines()
         for line in lines:
             user2, artists = line.split(":")
-            database[user2] = artists
+            database[user2] = artists.split(",")
     except FileNotFoundError:
         file = open(fileName, "w")
     
