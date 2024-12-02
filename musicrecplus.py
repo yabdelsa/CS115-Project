@@ -75,13 +75,13 @@ def getRecommendations(user, database):
         if user2 != user and not isPrivate(user2):
             artists2 = database[user2]
             for artist in artists2:
-                if artist.strip() in artists:
+                if artist in artists:
                     sameCounts[user2] = sameCounts.get(user2, 0) + 1
     sameCounts = {user2: count for user2, count in sameCounts.items() if len(database[user2]) != count}
     if sameCounts:
         for user2 in sameCounts:
             if sameCounts[user2] == max(sameCounts.values()):
-                recs = [artist for artist in database[user2] if artist.strip() not in artists]
+                recs = [artist for artist in database[user2] if artist not in artists]
                 recs.sort()
                 for rec in recs:
                     print(rec)
@@ -100,7 +100,6 @@ def showMostPopularArtists(database):
         if not isPrivate(user):
             artists = database[user]
             for artist in artists:
-                artist = artist.strip()
                 artistCounts[artist] = artistCounts.get(artist, 0) + 1
     if artistCounts:
         mostPopularArtists = []
@@ -115,10 +114,10 @@ def showMostPopularArtists(database):
         tied = [artist for artist in mostPopularArtists if artistCounts[artist] == maxCount]
         if tied:
             for artist in tied:
-                print(artist.strip())
+                print(artist)
         else:
             for artist in mostPopularArtists:
-                print(artist.strip())
+                print(artist)
     else: 
         print("Sorry, no artists found.")     
 
@@ -134,7 +133,6 @@ def mostPopularCount(database):
         if not isPrivate(user):
             artists = database[user]
             for artist in artists:
-                artist = artist.strip()
                 artistCounts[artist] = artistCounts.get(artist, 0) + 1
     if artistCounts:
         mostPopularCount = max(artistCounts.values())
@@ -159,7 +157,7 @@ def showUsersWithMostArtists(database):
         users = [user for user, count in userCounts.items() if count == maxArtists]
         users.sort()
         for user in users:
-            print(user.strip())
+            print(user)
     else:
         print("Sorry, no user found.")
 
@@ -178,6 +176,7 @@ def main(fileName, database):
         file = open(fileName, "r")
         lines = file.readlines()
         for line in lines:
+            line = line.strip()
             user2, artists = line.split(":")
             database[user2] = artists.split(",")
     except FileNotFoundError:
@@ -200,9 +199,10 @@ def main(fileName, database):
             showUsersWithMostArtists(database)
         option = menu()
     with open(fileName, "w") as file:
-        for user in database:
+        sortedDatabase = {user2: database[user2] for user2 in sorted(database)}
+        for user in sortedDatabase:
             artistsStr = ",".join(database[user])
             string = user + ":" + artistsStr
-            file.write(string)
+            file.write(string+"\n")
             
 main("musicrecplus.txt", database)
