@@ -1,28 +1,34 @@
 menuStr = """Enter a letter to choose an option:
 e - Enter preferences
 r - Get recommendations
-p - Show most popular artist
+p - Show most popular artists
 h - How popular is the most popular
 m - Which user has the most likes
 q - Save and quit
 """
 
-database = []
+database = {}
 
 def isNewUser(user, database):
     """
     Returns True if user's name is not found in file.
     Returns False if user's name is found in file.
     """
-    users = []
-    for line in database:
-        users.append(line.split(":")[0])
-    return user not in users
+    return user not in database
 
 def isPrivate(user):
+    """
+    Returns True if user chose to be private.
+    Returns False otherwise.
+    """
     return user.endswith("$")
 
 def menu():
+    """
+    Displays menu options and prompts user to select
+    one until they input valid choice and then returns
+    selection.
+    """
     option = input(menuStr).lower()
     while option not in ["e","r","p","h","m","q"]:
         option = input(menuStr).lower()
@@ -40,24 +46,20 @@ def enterPreferences(user, database):
         artist = input("Enter an artist that you like ( Enter to finish ): ").title().strip()
     artists.sort()
     artistsStr = ",".join(artists)
-    for i in range(len(database)):
-        user2 = database[i].split(":")[0]
-        if user == user2:
-            database[i] = user + ":" + artistsStr
-            return None
-    database.append(user + ":" + artistsStr)
+    database[user] = artistsStr
 
 def getRecommendations(user, database): 
+    sameCounts = {}
     pass
 
-def showMostPopularArtist(database):
+def showMostPopularArtists(database):
     """
     Finds top three artists who appear most in database
     and prints each of their names.
     """
     artistCounts = {}
-    for line in database:
-        user, artists = line.split(":")
+    for user in database:
+        artists = database[user]
         if not isPrivate(user):
             for artist in artists.split(","):
                 artistCounts[artist] = artistCounts.get(artist, 0) + 1
@@ -70,7 +72,7 @@ def showMostPopularArtist(database):
                     del artistCounts[artist]
                     break
         for artist in mostPopularArtists:
-            print(artist)
+            print(artist.strip())
     else: 
         print("Sorry, no artists found.")     
 
@@ -80,8 +82,8 @@ def mostPopularCount(database):
     prints number of times it is found.
     """
     artistCounts = {}
-    for line in database:
-        user, artists = line.split(":")
+    for user in database:
+        artists = database[user]
         if not isPrivate(user):
             for artist in artists.split(","):
                 artistCounts[artist] = artistCounts.get(artist, 0) + 1
@@ -91,31 +93,41 @@ def mostPopularCount(database):
     else: 
         print("Sorry, no artists found.")
 
-def showUserWithMostArtists(database):
+def showUsersWithMostArtists(database):
     """
     Prints the names of the user(s) who like(s) the
     most artists.
     """
     userCounts = {}
-    for line in database:
-        user, artists = line.split(":")
+    for user in database:
+        artists = database[user]
         if not isPrivate(user):
             userCounts[user] = len(artists.split(","))
     if userCounts:
         maxArtists = max(userCounts.values())
         users = [user for user, count in userCounts.items() if count == maxArtists]
+        users.sort()
         for user in users:
-            print(user)
+            print(user.strip())
     else:
         print("Sorry, no user found.")
 
 def main(fileName, database):
-    user = input("Enter your name ( put a $ symbol after your name if you wish your preferences to remain private ): ")
+    """
+    Prompts user to input their name, creates file
+    if it doesn't exist, opens menu and runs function
+    according to user selection until they quit, and
+    finally writes to file.
+    """
+    user = input("Enter your name (put a $ symbol after your name if you wish your preferences to remain private): ")
     
     try:
         file = open(fileName, "r")
-        database = open(fileName, "r").readlines()
-    except:
+        lines = file.readlines()
+        for line in lines:
+            user2, artists = line.split(":")
+            database[user2] = artists
+    except FileNotFoundError:
         file = open(fileName, "w")
     
     if isNewUser(user, database):
@@ -126,16 +138,16 @@ def main(fileName, database):
         if option == "e":
             enterPreferences(user, database)
         elif option == "r":
-            print("Get Recommendations") 
+            getRecommendations(user, database)
         elif option == "p":
-            showMostPopularArtist(database)
+            showMostPopularArtists(database)
         elif option == "h":
             mostPopularCount(database)
         elif option == "m":
-            showUserWithMostArtists(database)
+            showUsersWithMostArtists(database)
         option = menu()
     with open(fileName, "w") as file:
-        for line in database:
-            file.write(line)
+        for user in database:
+            file.write(user + ":" + database[user])
             
 main("musicrecplus.txt", database)
