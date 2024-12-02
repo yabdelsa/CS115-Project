@@ -40,14 +40,19 @@ def enterPreferences(user, database):
     updates the database. 
     """
     artists = []
-    artist = input("Enter an artist that you like (Enter to finish): ").title().strip()
+    artist = input("Enter an artist that you like (Enter to finish): \n").title().strip()
     while artist:
         artists.append(artist)
-        artist = input("Enter an artist that you like (Enter to finish): ").title().strip()
+        artist = input("Enter an artist that you like (Enter to finish): \n").title().strip()
     artists.sort()
     database[user] = artists
 
-def getRecommendations(user, database): 
+def getRecommendations(user, database):
+    """
+    Finds other user with most similar preferences
+    to user and prints artists in their preferences
+    that user does not also have.
+    """
     sameCounts = {}
     artists = database[user]
     for user2 in database:
@@ -59,11 +64,11 @@ def getRecommendations(user, database):
     sameCounts = {user2: count for user2, count in sameCounts.items() if len(database[user2]) != count}
     if sameCounts:
         for user2 in sameCounts:
-            if sameCounts[user2] == max(sameCounts.items()):
-                recs = [rec for artist in database[recommender] if artist not in artists]
-                recsString = ",".join(recs)
-                print(recsString)
-                return None
+            if sameCounts[user2] == max(sameCounts.values()):
+                recs = [artist for artist in database[user2] if artist.strip() not in artists]
+                recs.sort()
+                for rec in recs:
+                    print(rec)
     else:
         print("No recommendations available at this time.")
 
@@ -77,6 +82,7 @@ def showMostPopularArtists(database):
         if not isPrivate(user):
             artists = database[user]
             for artist in artists:
+                artist = artist.strip()
                 artistCounts[artist] = artistCounts.get(artist, 0) + 1
     if artistCounts:
         mostPopularArtists = []
@@ -101,6 +107,7 @@ def mostPopularCount(database):
         if not isPrivate(user):
             artists = database[user]
             for artist in artists:
+                artist = artist.strip()
                 artistCounts[artist] = artistCounts.get(artist, 0) + 1
     if artistCounts:
         mostPopularCount = max(artistCounts.values())
@@ -134,7 +141,7 @@ def main(fileName, database):
     according to user selection until they quit, and
     finally writes to file.
     """
-    user = input("Enter your name (put a $ symbol after your name if you wish your preferences to remain private): ")
+    user = input("Enter your name (put a $ symbol after your name if you wish your preferences to remain private): \n")
     
     try:
         file = open(fileName, "r")
