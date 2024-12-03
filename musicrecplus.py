@@ -2,6 +2,7 @@
 CS115 Group Project
 Created by Zachary Wilkinson, Yahia Abdelsalam, Thomas Webster
 Pledge: I pledge my honor that I have abided by the Stevens Honor System.
+^ Signed by Zachary Wilkinson, Yahia Abdelsalam, Thomas Webster
 """
 
 menuStr = """Enter a letter to choose an option:
@@ -29,7 +30,7 @@ def isPrivate(user):
     Returns True if user chose to be private.
     Returns False otherwise.
 
-    Created by Yahia AbdelSalam
+    Created by Yahia Abdelsalam
     """
     return user.endswith("$")
 
@@ -39,7 +40,7 @@ def menu():
     one until they input valid choice and then returns
     selection.
 
-    Created by Thomas Webster
+    Created by Yahia Abdelsalam
     """
     option = input(menuStr).lower()
     while option not in ["e","r","p","h","m","q"]:
@@ -51,7 +52,7 @@ def enterPreferences(user, database):
     Prompts the user to enter their favorite artists and
     updates the database.
 
-    Created by Yahia Abdelsalam
+    Created by Thomas Webster
     """
     artists = []
     artist = input("Enter an artist that you like (Enter to finish): \n").title().strip()
